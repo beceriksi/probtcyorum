@@ -1,9 +1,9 @@
-name: crypto-scout
+name: strategy-bot
 
 on:
   schedule:
-    - cron: "0 * * * *"   # Her saat başı otomatik çalışır (UTC)
-  workflow_dispatch:       # Manuel çalıştırma
+    - cron: "0 */2 * * *"   # 2 saatte bir
+  workflow_dispatch:
 
 jobs:
   run:
@@ -23,16 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: MEXC Sinyal Tarayıcı (SMC + Hacim)
+      - name: Çalıştır: Strateji Botu
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: |
-          python main.py
-
-      - name: BTC/ETH Günlük Durum Özeti
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: |
-          python btc_watch.py
+          python strategy_scan.py
